@@ -229,10 +229,13 @@ class Client:
             else:
                 return None
 
-    def create_user(self, email, password, display_name=''):
+    def create_user(self, email, password, essay='', gender='', location='', display_name=''):
         response, content = self._connection.call(
             'users', dict(email=email,
                           password=password,
+                          essay=essay,
+                          gender=gender,
+                          location=location,
                           display_name=display_name))
         return _User(self._connection, response['location'])
 
@@ -777,7 +780,37 @@ class _User:
     def display_name(self, value):
         self._get_info()
         self._info['display_name'] = value
+    
+    @property
+    def essay(self):
+        self._get_info()
+        return self._info.get('essay', None)
 
+    @essay.setter
+    def essay(self, value):
+        self._get_info()
+        self._info['essay'] = value
+    
+    @property
+    def location(self):
+        self._get_info()
+        return self._info.get('location', None)
+
+    @location.setter
+    def location(self, value):
+        self._get_info()
+        self._info['location'] = value
+
+    @property
+    def gender(self):
+        self._get_info()
+        return self._info.get('gender', None)
+
+    @gender.setter
+    def gender(self, value):
+        self._get_info()
+        self._info['gender'] = value
+        
     @property
     def password(self):
         self._get_info()
